@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>知识卡片生成器（750×906）</title>
+  <title>知识卡片生成器（750 x 906）</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -37,67 +37,67 @@
     body { min-height: 100vh; background: var(--page-bg); color: var(--text-main); font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; }
     .app { max-width: 1440px; margin: 0 auto; padding: 28px 20px 40px; }
     .hero { text-align: center; margin-bottom: 22px; }
-    .hero h1 { font-size: 34px; line-height: 1.2; font-weight: 800; letter-spacing: 1px; color: var(--brand-blue-deep); margin-bottom: 8px; }
-    .hero p { font-size: 15px; color: var(--text-sub); }
+    .hero h1 { font-size: 38px; line-height: 1.2; font-weight: 800; letter-spacing: 1px; color: var(--brand-blue-deep); margin-bottom: 8px; }
+    .hero p { font-size: 17px; color: var(--text-sub); }
     .status-bar { display: flex; justify-content: center; margin-bottom: 18px; }
-    .status-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,.78); border: 1px solid rgba(162,187,211,.48); color: var(--brand-blue); font-size: 13px; font-weight: 700; box-shadow: 0 10px 24px rgba(89,127,164,.12); backdrop-filter: blur(10px); }
+    .status-chip { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; background: rgba(255,255,255,.78); border: 1px solid rgba(162,187,211,.48); color: var(--brand-blue); font-size: 15px; font-weight: 700; box-shadow: 0 10px 24px rgba(89,127,164,.12); backdrop-filter: blur(10px); }
     .workspace { display: grid; grid-template-columns: minmax(720px, 1fr) 440px; gap: 22px; align-items: start; }
     .preview-panel, .editor-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 28px; box-shadow: 0 18px 42px rgba(83,119,155,.12); backdrop-filter: blur(14px); }
     .preview-panel { padding: 22px; }
     .preview-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-    .preview-title { font-size: 20px; font-weight: 800; color: var(--brand-blue-deep); }
-    .preview-note { font-size: 13px; color: var(--text-sub); }
+    .preview-title { font-size: 24px; font-weight: 800; color: var(--brand-blue-deep); }
+    .preview-note { font-size: 15px; color: var(--text-sub); }
     .preview-stage { display: flex; justify-content: center; align-items: flex-start; padding: 12px 0 18px; overflow: auto; min-height: 780px; }
     .banner { position: relative; width: 750px; height: 906px; overflow: hidden; border-radius: 26px; background: var(--banner-bg); border: 1px solid var(--banner-stroke); box-shadow: var(--banner-shadow); }
-    .preview-banner { transform: scale(0.82); transform-origin: top center; margin: 0; }
+    .preview-banner { transform: scale(0.9); transform-origin: top center; margin: 0; }
     .banner::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 18% 12%, rgba(140,190,227,.14), transparent 32%), radial-gradient(circle at 92% 14%, rgba(120,166,207,.10), transparent 26%), linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,0)); pointer-events: none; }
     .banner-sheen { position: absolute; inset: 18px 18px auto; height: 210px; border-radius: 22px; background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,0)); pointer-events: none; }
-    .content { position: relative; z-index: 2; height: 100%; padding: 22px 24px 74px; display: grid; grid-template-rows: 54px 92px minmax(0, 1fr) 54px 86px; row-gap: 14px; }
+    .content { position: relative; z-index: 2; height: 100%; padding: 20px 22px 68px; display: grid; grid-template-rows: 58px 104px minmax(0, 1fr) 60px 92px; row-gap: 16px; }
     .countdown-badge { justify-self: end; align-self: start; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; min-height: 54px; border-radius: 0 0 0 22px; background: var(--badge-bg); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
     .countdown-badge svg { width: 28px; height: 28px; color: var(--icon-accent); flex-shrink: 0; }
-    .countdown-badge span { font-size: 19px; font-weight: 800; color: var(--badge-text); letter-spacing: 1px; }
+    .countdown-badge span { font-size: 22px; font-weight: 800; color: var(--badge-text); letter-spacing: 1px; }
     .title-block { padding: 0 8px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: nowrap; min-width: 0; }
-    .title-piece { font-size: 54px; line-height: 1; font-weight: 900; color: var(--title-main); letter-spacing: 0; text-shadow: 0 2px 0 rgba(255,255,255,.8); white-space: nowrap; }
+    .title-piece { font-size: 62px; line-height: 1; font-weight: 900; color: var(--title-main); letter-spacing: 0; text-shadow: 0 2px 0 rgba(255,255,255,.8); white-space: nowrap; }
     .title-piece.accent { color: var(--title-accent); }
-    .title-divider { width: 2px; height: 54px; background: linear-gradient(180deg, rgba(28,98,148,.18), rgba(28,98,148,.5), rgba(28,98,148,.18)); }
-    .title-icon { width: 40px; height: 40px; color: var(--icon-accent); filter: drop-shadow(0 4px 10px rgba(86,168,221,.18)); flex-shrink: 0; }
+    .title-divider { width: 2px; height: 62px; background: linear-gradient(180deg, rgba(28,98,148,.18), rgba(28,98,148,.5), rgba(28,98,148,.18)); }
+    .title-icon { width: 46px; height: 46px; color: var(--icon-accent); filter: drop-shadow(0 4px 10px rgba(86,168,221,.18)); flex-shrink: 0; }
     .frame-wrap { padding: 8px; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(242,248,252,.9)); border: 1px solid rgba(151,183,210,.4); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 22px rgba(124,158,190,.14); display: flex; flex-direction: column; min-height: 0; }
-    .frame-tab { width: fit-content; max-width: calc(100% - 40px); margin: 0 auto 8px; padding: 8px 26px 10px; border-radius: 0 0 18px 18px; background: linear-gradient(180deg, #3180c2 0%, #1d66a8 100%); color: #fff; font-size: 18px; font-weight: 800; letter-spacing: .5px; box-shadow: 0 8px 18px rgba(45,108,165,.2); clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%); text-align: center; line-height: 1.2; }
+    .frame-tab { width: fit-content; max-width: calc(100% - 32px); margin: 0 auto 10px; padding: 10px 30px 12px; border-radius: 0 0 18px 18px; background: linear-gradient(180deg, #3180c2 0%, #1d66a8 100%); color: #fff; font-size: 20px; font-weight: 800; letter-spacing: .5px; box-shadow: 0 8px 18px rgba(45,108,165,.2); clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%); text-align: center; line-height: 1.2; }
     .placeholder-box { position: relative; width: 100%; height: 404px; flex: 0 0 404px; overflow: hidden; border-radius: 22px; background: var(--frame-bg); border: 1px solid var(--frame-stroke); box-shadow: inset 0 1px 1px rgba(255,255,255,.8), 0 10px 24px rgba(91,132,168,.08); display: flex; align-items: center; justify-content: center; }
     .placeholder-box::before { content: ""; position: absolute; inset: 14px; border-radius: 18px; border: 1px solid rgba(160,191,217,.22); pointer-events: none; }
     .ph-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(30,92,142,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(30,92,142,.035) 1px, transparent 1px); background-size: 42px 42px; pointer-events: none; }
-    .placeholder-copy { position: relative; z-index: 2; max-width: 360px; text-align: center; color: var(--text-sub); padding: 22px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px dashed rgba(118,160,196,.48); box-shadow: 0 10px 24px rgba(117,155,189,.08); }
+    .placeholder-copy { position: relative; z-index: 2; max-width: 392px; text-align: center; color: var(--text-sub); padding: 22px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px dashed rgba(118,160,196,.48); box-shadow: 0 10px 24px rgba(117,155,189,.08); }
     .ph-icon { width: 58px; height: 58px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; border-radius: 18px; background: linear-gradient(180deg, #eff6fb 0%, #dbe9f5 100%); color: var(--brand-blue); }
-    .ph-main { font-size: 22px; font-weight: 800; color: var(--brand-blue-deep); line-height: 1.4; }
-    .ph-sub { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--text-sub); }
+    .ph-main { font-size: 26px; font-weight: 800; color: var(--brand-blue-deep); line-height: 1.4; }
+    .ph-sub { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--text-sub); }
     .uploaded-layer { position: absolute; inset: 0; z-index: 3; cursor: grab; user-select: none; }
     .uploaded-layer:active { cursor: grabbing; }
     .uploaded-layer img { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform: translate(-50%, -50%) translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--scale, 1)); transform-origin: center center; will-change: transform; pointer-events: none; }
-    .slogan-bar { margin: 0 12px; padding: 13px 18px; background: var(--slogan-bg); display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--slogan-text); box-shadow: inset 0 1px 0 rgba(255,255,255,.7); overflow: hidden; }
-    .slogan-item { font-size: 19px; font-weight: 500; letter-spacing: .3px; white-space: nowrap; }
-    .slogan-sep { width: 1px; height: 24px; background: rgba(23,63,104,.2); flex-shrink: 0; }
+    .slogan-bar { margin: 0 12px; height: 100%; padding: 0 18px; background: var(--slogan-bg); display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--slogan-text); box-shadow: inset 0 1px 0 rgba(255,255,255,.7); overflow: hidden; }
+    .slogan-item { display: flex; align-items: center; font-size: 22px; font-weight: 500; line-height: 1; letter-spacing: .3px; white-space: nowrap; }
+    .slogan-sep { width: 1px; height: 24px; align-self: center; background: rgba(23,63,104,.2); flex-shrink: 0; }
     .footer-row { display: flex; justify-content: center; align-items: center; }
-    .cta-btn { display: inline-flex; align-items: center; gap: 16px; min-width: 0; width: 470px; max-width: 100%; justify-content: center; padding: 16px 28px; border-radius: 999px; background: var(--cta-bg); color: var(--cta-text); box-shadow: var(--cta-shadow); }
-    .cta-text { font-size: 24px; font-weight: 900; letter-spacing: .5px; white-space: nowrap; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 18px; min-width: 0; width: 520px; max-width: 100%; justify-content: center; padding: 18px 30px; border-radius: 999px; background: var(--cta-bg); color: var(--cta-text); box-shadow: var(--cta-shadow); }
+    .cta-text { font-size: 28px; font-weight: 900; letter-spacing: .5px; white-space: nowrap; }
     .cta-arrow { width: 48px; height: 48px; border-radius: 50%; background: var(--cta-arrow-bg); display: flex; align-items: center; justify-content: center; color: var(--brand-blue-deep); flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
     .cta-arrow svg { width: 22px; height: 22px; }
     .editor-panel { padding: 22px; position: sticky; top: 18px; }
-    .panel-title { font-size: 22px; font-weight: 800; color: var(--brand-blue-deep); margin-bottom: 6px; }
-    .panel-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 18px; }
+    .panel-title { font-size: 26px; font-weight: 800; color: var(--brand-blue-deep); margin-bottom: 6px; }
+    .panel-desc { font-size: 15px; color: var(--text-sub); line-height: 1.6; margin-bottom: 18px; }
     .section-card { padding: 16px; border-radius: 20px; background: rgba(247,250,253,.95); border: 1px solid rgba(180,200,221,.36); margin-bottom: 14px; }
-    .section-card h3 { font-size: 15px; font-weight: 800; color: var(--brand-blue); margin-bottom: 12px; }
+    .section-card h3 { font-size: 17px; font-weight: 800; color: var(--brand-blue); margin-bottom: 12px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     label { display: block; }
-    .field-label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-sub); font-weight: 700; letter-spacing: .3px; }
-    .input { width: 100%; height: 44px; border: 1px solid rgba(176,197,218,.7); border-radius: 14px; background: #fff; padding: 0 14px; font-size: 14px; color: var(--text-main); outline: none; transition: border-color .2s, box-shadow .2s; }
+    .field-label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-sub); font-weight: 700; letter-spacing: .3px; }
+    .input { width: 100%; height: 48px; border: 1px solid rgba(176,197,218,.7); border-radius: 14px; background: #fff; padding: 0 16px; font-size: 16px; color: var(--text-main); outline: none; transition: border-color .2s, box-shadow .2s; }
     .input:focus { border-color: rgba(41,111,166,.6); box-shadow: 0 0 0 4px rgba(50,122,179,.12); }
     .mode-selector { display: flex; gap: 8px; padding: 7px; background: #eef4fa; border-radius: 16px; margin-bottom: 14px; }
     .mode-btn, .btn { border: none; cursor: pointer; transition: .2s ease; }
-    .mode-btn { flex: 1; height: 42px; border-radius: 12px; background: transparent; color: var(--text-sub); font-size: 14px; font-weight: 700; }
+    .mode-btn { flex: 1; height: 44px; border-radius: 12px; background: transparent; color: var(--text-sub); font-size: 15px; font-weight: 700; }
     .mode-btn.active { background: linear-gradient(180deg, #1d6ca5 0%, #155483 100%); color: #fff; box-shadow: 0 8px 18px rgba(26,95,149,.2); }
     .btn-row, .action-row, .slider-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .btn-row { margin-top: 16px; }
-    .btn { min-width: 128px; height: 44px; padding: 0 16px; border-radius: 14px; font-size: 14px; font-weight: 800; }
+    .btn { min-width: 132px; height: 46px; padding: 0 18px; border-radius: 14px; font-size: 15px; font-weight: 800; }
     .btn.primary { background: linear-gradient(180deg, #1d6ca5 0%, #155483 100%); color: #fff; box-shadow: 0 10px 18px rgba(30,98,151,.2); }
     .btn.secondary { background: #fff; color: var(--brand-blue); border: 1px solid rgba(177,198,219,.8); }
     .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
@@ -110,35 +110,35 @@
     .multi-image-item.selected { border-color: var(--brand-blue); }
     .multi-image-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .multi-image-remove { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: none; border-radius: 50%; background: rgba(12,45,74,.72); color: #fff; font-size: 16px; cursor: pointer; }
-    .multi-image-empty, .small-note { font-size: 13px; line-height: 1.6; color: var(--text-sub); }
+    .multi-image-empty, .small-note { font-size: 14px; line-height: 1.6; color: var(--text-sub); }
     .generated-box { margin-top: 16px; padding: 14px; border-radius: 20px; background: rgba(247,250,253,.95); border: 1px solid rgba(180,200,221,.36); }
-    .generated-box img { width: 100%; height: auto; display: block; border-radius: 14px; border: 1px solid rgba(185,204,223,.8); background: #fff; }
-    .generated-empty { padding: 24px 16px; border-radius: 14px; text-align: center; background: linear-gradient(180deg, #f7fbff 0%, #edf4f9 100%); color: var(--text-soft); border: 1px dashed rgba(176,197,218,.8); }
+    .generated-box img { width: 100%; height: auto; display: block; border-radius: 14px; border: 1px solid rgba(185,204,223,.8); background: #fff; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+    .generated-empty { padding: 26px 18px; border-radius: 14px; text-align: center; background: linear-gradient(180deg, #f7fbff 0%, #edf4f9 100%); color: var(--text-soft); border: 1px dashed rgba(176,197,218,.8); }
     .capture-wrap { position: absolute; left: -10000px; top: 0; opacity: 1; pointer-events: none; }
     @media (max-width: 1240px) { .workspace { grid-template-columns: 1fr; } .editor-panel { position: static; } }
-    @media (max-width: 860px) { .app { padding: 18px 12px 28px; } .preview-stage { min-height: 620px; } .preview-banner { transform: scale(0.62); margin: 0; } .grid-2 { grid-template-columns: 1fr; } .cta-btn { width: 100%; } }
+    @media (max-width: 860px) { .app { padding: 18px 12px 28px; } .preview-stage { min-height: 700px; } .preview-banner { transform: scale(0.7); margin: 0; } .grid-2 { grid-template-columns: 1fr; } .cta-btn { width: 100%; } }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="hero">
       <h1>知识卡片生成器</h1>
-      <p>按参考图风格生成 750 × 906 卡片，支持文本实时编辑、单图多图导出与 CTA 文案自定义。</p>
+      <p>按参考图风格生成 750 x 906 卡片，支持文本实时编辑、单图多图导出与 CTA 文案自定义。</p>
     </div>
-    <div class="status-bar"><div class="status-chip">导出尺寸：750 × 906 PNG</div></div>
+    <div class="status-bar"><div class="status-chip">高清导出：750 x 906 PNG</div></div>
     <div class="workspace">
       <section class="preview-panel">
         <div class="preview-header">
           <div>
             <div class="preview-title">实时预览</div>
-            <div class="preview-note">图片支持拖拽调整位置，缩放滑块调整大小。</div>
+            <div class="preview-note">图片支持拖拽调整位置，缩放滑块可调大小。</div>
           </div>
         </div>
         <div class="preview-stage"><div id="banner-preview-2" class="banner preview-banner" aria-label="实时预览"></div></div>
       </section>
       <aside class="editor-panel">
         <div class="panel-title">在线编辑</div>
-        <div class="panel-desc">页面视觉已调整为更接近你提供的参考图，底部动作按钮文案也已改成可配置字段。</div>
+        <div class="panel-desc">页面已调整为更大字号与高清导出，方便直接修改文案并生成更清晰的图片。</div>
         <div class="section-card">
           <h3>图片模式</h3>
           <div class="mode-selector">
@@ -154,7 +154,7 @@
             <div class="slider-row">
               <span class="field-label" style="margin:0">缩放</span>
               <input id="scaleRange" type="range" min="0.5" max="2.5" step="0.01" value="1" />
-              <span id="scaleValue" class="kbd">1.00×</span>
+              <span id="scaleValue" class="kbd">1.00x</span>
             </div>
           </div>
           <div id="multiImagePreview" class="multi-image-preview" style="display:none"><div class="multi-image-empty">多图模式下可一次选择多张图片，并逐张调整。</div></div>
@@ -171,7 +171,7 @@
           </div>
           <div class="grid-2" style="margin-top:12px">
             <label><span class="field-label">中间图框标题</span><input id="frameTitle2" class="input" type="text" value="建设工程招投标流程关键节点图解" /></label>
-            <label><span class="field-label">品牌副标题</span><input id="brandSub2" class="input" type="text" value="智能备考 · 二建专项" /></label>
+            <label><span class="field-label">品牌副标题</span><input id="brandSub2" class="input" type="text" value="智能题库 · 二建专项" /></label>
           </div>
         </div>
         <div class="section-card">
@@ -206,7 +206,7 @@
           <img id="generatedImg" alt="生成图片" style="display:none" />
           <div id="generatedEmpty" class="generated-empty">点击“生成图片”后，这里会显示导出的结果预览。</div>
         </div>
-        <div class="small-note" style="margin-top:12px">CTA 按钮文案现在会实时同步到卡片底部，可直接改成“点击领取更多免费资料”等任意内容。</div>
+        <div class="small-note" style="margin-top:12px">CTA 按钮文案会实时同步到卡片底部，可直接改成你需要的任意内容。</div>
       </aside>
     </div>
     <div class="capture-wrap"><div id="banner-capture" class="banner"></div></div>
@@ -227,7 +227,7 @@
       examTitle: "二建",
       topic: "法规",
       frameTitle: "建设工程招投标流程关键节点图解",
-      brandSub: "智能备考 · 二建专项",
+      brandSub: "智能题库 · 二建专项",
       slogans: ["每日解锁高频考点", "考前冲刺抢分", ""],
       ctaText: "免费解锁冲刺资料",
       imageDataUrl: null,
@@ -353,7 +353,7 @@
                   </svg>
                 </div>
                 <div class="ph-main">在此放置参考图中的流程图或知识信息图</div>
-                <div class="ph-sub">支持拖拽定位与缩放，导出时会按 750 × 906 比例生成。</div>
+                <div class="ph-sub">支持拖拽定位与缩放，导出时会按 750 x 906 比例生成。</div>
               </div>
               <div class="uploaded-layer" id="uploadedLayer" style="display:none">
                 <img id="uploadedImg" alt="上传图片" src="" />
@@ -531,7 +531,7 @@
       state.dy = 0;
       $("imgTools").style.display = "block";
       $("scaleRange").value = "1";
-      $("scaleValue").textContent = "1.00×";
+      $("scaleValue").textContent = "1.00x";
       $("btnResetImg").disabled = false;
       dirty = true;
       renderAll();
@@ -576,7 +576,7 @@
       state.dy = imgData.dy;
       $("imgTools").style.display = "block";
       $("scaleRange").value = String(state.userScale);
-      $("scaleValue").textContent = `${state.userScale.toFixed(2)}×`;
+      $("scaleValue").textContent = `${state.userScale.toFixed(2)}x`;
       dirty = true;
       syncInputsFromState();
       renderAll();
@@ -650,7 +650,7 @@
     async function exportPNG() {
       const canvas = await html2canvas($("banner-capture"), {
         backgroundColor: "#ffffff",
-        scale: 1,
+        scale: Math.max(2, Math.min(window.devicePixelRatio || 1, 3)),
         useCORS: false,
         allowTaint: true,
         logging: false,
@@ -710,7 +710,7 @@
 
       $("scaleRange").addEventListener("input", () => {
         state.userScale = parseFloat($("scaleRange").value);
-        $("scaleValue").textContent = `${state.userScale.toFixed(2)}×`;
+        $("scaleValue").textContent = `${state.userScale.toFixed(2)}x`;
         updateImageTransform(getNodes($("banner-preview-2")));
         if (nodesCapture.current) updateImageTransform(nodesCapture.current);
         saveCurrentMultiImageState();
@@ -722,7 +722,7 @@
         state.dx = 0;
         state.dy = 0;
         $("scaleRange").value = "1";
-        $("scaleValue").textContent = "1.00×";
+        $("scaleValue").textContent = "1.00x";
         saveCurrentMultiImageState();
         dirty = true;
         renderAll();
@@ -746,7 +746,7 @@
               const url = URL.createObjectURL(blob);
               const a = document.createElement("a");
               a.href = url;
-              a.download = `knowledge-card-750x906-${i + 1}.png`;
+              a.download = `knowledge-card-hd-${i + 1}.png`;
               document.body.appendChild(a);
               a.click();
               a.remove();
@@ -777,7 +777,7 @@
           if (!url) return;
           const a = document.createElement("a");
           a.href = url;
-          a.download = "knowledge-card-750x906.png";
+          a.download = "knowledge-card-hd.png";
           document.body.appendChild(a);
           a.click();
           a.remove();
